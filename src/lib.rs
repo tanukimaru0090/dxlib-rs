@@ -31,7 +31,7 @@ impl fmt::Display for DxError<i32> {
 }
 impl error::Error for DxError<i32> {}
 
-fn dxlib_init() -> Result<i32, DxError<i32>> {
+pub fn dxlib_init() -> Result<i32, DxError<i32>> {
     let res = unsafe { dx_DxLib_Init() };
     if res == -1 {
         return Err(DxError::new("DxLib_Init() Erorr", res));
@@ -39,7 +39,7 @@ fn dxlib_init() -> Result<i32, DxError<i32>> {
         return Ok(res);
     }
 }
-fn dxlib_end() -> Result<i32, DxError<i32>> {
+pub fn dxlib_end() -> Result<i32, DxError<i32>> {
     let res = unsafe { dx_DxLib_End() };
     if res == -1 {
         return Err(DxError::new("DxLib_End() Error", res));
@@ -47,7 +47,7 @@ fn dxlib_end() -> Result<i32, DxError<i32>> {
         return Ok(res);
     }
 }
-fn process_message() -> Result<i32, DxError<i32>> {
+pub fn process_message() -> Result<i32, DxError<i32>> {
     let res = unsafe { dx_ProcessMessage() };
     if res == -1 {
         return Err(DxError::new("ProcessMessage() Error", res));
@@ -55,7 +55,7 @@ fn process_message() -> Result<i32, DxError<i32>> {
         return Ok(res);
     }
 }
-fn draw_string(x: i32, y: i32, string: &str, color: u32) -> Result<i32, DxError<i32>> {
+pub fn draw_string(x: i32, y: i32, string: &str, color: u32) -> Result<i32, DxError<i32>> {
     let res = unsafe { dx_DrawString(x, y, string, color) };
     if res == -1 {
         return Err(DxError::new("", res));
@@ -63,13 +63,13 @@ fn draw_string(x: i32, y: i32, string: &str, color: u32) -> Result<i32, DxError<
         return Ok(res);
     }
 }
-fn get_color(red: i32, green: i32, blue: i32) -> Option<u32> {
+pub fn get_color(red: i32, green: i32, blue: i32) -> Option<u32> {
     if red < 0 || green < 0 || blue < 0 || red > 255 || green > 255 || blue > 255 {
         return None;
     }
     Some(unsafe { dx_GetColor(red, green, blue) })
 }
-fn change_window_mode(flag: i32) -> Result<i32, DxError<i32>> {
+pub fn change_window_mode(flag: i32) -> Result<i32, DxError<i32>> {
     let res = unsafe { dx_ChangeWindowMode(flag) };
     if res == -1 {
         return Err(DxError::new("", res));
@@ -77,7 +77,7 @@ fn change_window_mode(flag: i32) -> Result<i32, DxError<i32>> {
         return Ok(res);
     }
 }
-fn set_use_charcode_format(char_code_format: i32) -> Result<i32, DxError<i32>> {
+pub fn set_use_charcode_format(char_code_format: i32) -> Result<i32, DxError<i32>> {
     let res = unsafe { dx_SetUseCharCodeFormat(char_code_format) };
     if res == -1 {
         return Err(DxError::new("", res));
@@ -85,7 +85,7 @@ fn set_use_charcode_format(char_code_format: i32) -> Result<i32, DxError<i32>> {
         return Ok(res);
     }
 }
-fn load_graph(file_name: &str) -> Result<i32, DxError<i32>> {
+pub fn load_graph(file_name: &str) -> Result<i32, DxError<i32>> {
     let res = unsafe { dx_LoadGraph(file_name) };
     if res == -1 {
         return Err(DxError::new("", res));
@@ -93,7 +93,7 @@ fn load_graph(file_name: &str) -> Result<i32, DxError<i32>> {
         return Ok(res);
     }
 }
-fn draw_graph(x: i32, y: i32, gr_handle: i32, trans_flag: i32) -> Result<i32, DxError<i32>> {
+pub fn draw_graph(x: i32, y: i32, gr_handle: i32, trans_flag: i32) -> Result<i32, DxError<i32>> {
     let res = unsafe { dx_DrawGraph(x, y, gr_handle, trans_flag) };
     if res == -1 {
         return Err(DxError::new("", res));
@@ -101,7 +101,7 @@ fn draw_graph(x: i32, y: i32, gr_handle: i32, trans_flag: i32) -> Result<i32, Dx
         return Ok(res);
     }
 }
-fn draw_extend_graph(
+pub fn draw_extend_graph(
     x1: i32,
     y1: i32,
     x2: i32,
