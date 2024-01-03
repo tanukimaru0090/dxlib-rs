@@ -31,6 +31,23 @@ impl fmt::Display for DxError<i32> {
 }
 impl error::Error for DxError<i32> {}
 
+pub fn clear_draw_screen() -> Result<i32, DxError<i32>> {
+    let res = unsafe { dx_ClearDrawScreen() };
+    if res == -1 {
+        return Err(DxError::new("DxLib_Init() Erorr", res));
+    } else {
+        return Ok(res);
+    }
+}
+pub fn screen_flip() -> Result<i32, DxError<i32>> {
+    let res = unsafe { dx_ScreenFlip() };
+    if res == -1 {
+        return Err(DxError::new("DxLib_Init() Erorr", res));
+    } else {
+        return Ok(res);
+    }
+}
+
 pub fn dxlib_init() -> Result<i32, DxError<i32>> {
     let res = unsafe { dx_DxLib_Init() };
     if res == -1 {
