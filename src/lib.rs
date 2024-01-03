@@ -34,7 +34,7 @@ impl error::Error for DxError<i32> {}
 pub fn clear_draw_screen() -> Result<i32, DxError<i32>> {
     let res = unsafe { dx_ClearDrawScreen() };
     if res == -1 {
-        return Err(DxError::new("DxLib_Init() Erorr", res));
+        return Err(DxError::new(" Erorr", res));
     } else {
         return Ok(res);
     }
@@ -42,7 +42,15 @@ pub fn clear_draw_screen() -> Result<i32, DxError<i32>> {
 pub fn screen_flip() -> Result<i32, DxError<i32>> {
     let res = unsafe { dx_ScreenFlip() };
     if res == -1 {
-        return Err(DxError::new("DxLib_Init() Erorr", res));
+        return Err(DxError::new(" Erorr", res));
+    } else {
+        return Ok(res);
+    }
+}
+pub fn set_draw_screen(draw_screen:i32) -> Result<i32, DxError<i32>> {
+    let res = unsafe { dx_SetDrawScreen(draw_screen) };
+    if res == -1 {
+        return Err(DxError::new("DxLib_End() Error", res));
     } else {
         return Ok(res);
     }
