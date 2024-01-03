@@ -39,6 +39,15 @@ pub fn clear_draw_screen() -> Result<i32, DxError<i32>> {
         return Ok(res);
     }
 }
+pub fn set_graph_mode(size_x:i32,size_y:i32,color_bit_num:i32,refresh_rate:i32) -> Result<i32, DxError<i32>> {
+    let res  = unsafe{dx_SetGraphMode(size_x,size_y,color_bit_num,refresh_rate)};
+    if res == -1 {
+        return Err(DxError::new(" Erorr", res));
+    } else {
+        return Ok(res);
+    }
+}
+
 pub fn screen_flip() -> Result<i32, DxError<i32>> {
     let res = unsafe { dx_ScreenFlip() };
     if res == -1 {
@@ -50,7 +59,7 @@ pub fn screen_flip() -> Result<i32, DxError<i32>> {
 pub fn set_draw_screen(draw_screen:i32) -> Result<i32, DxError<i32>> {
     let res = unsafe { dx_SetDrawScreen(draw_screen) };
     if res == -1 {
-        return Err(DxError::new("DxLib_End() Error", res));
+        return Err(DxError::new("Error", res));
     } else {
         return Ok(res);
     }
@@ -583,9 +592,11 @@ mod tests {
         change_window_mode(TRUE)?;
         set_use_charcode_format(DX_CHARCODEFORMAT_UTF8)?;
         set_main_window_text(TEST_WINDOW_TITLE)?;
+        set_graph_mode(1280,800,32,120)?;
         dxlib_init()?;
         let img = load_graph("/Users/daruma/Downloads/kisida.jpg")?;
         play_music("/Users/daruma/Downloads/touhou-music.mp3",DX_PLAYTYPE_BACK)?;
+        
         loop {
             if let Err(err) = process_message() {
                 println!("ウィンドウが閉じられたよーーー: {}", err);

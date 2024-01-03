@@ -44,7 +44,7 @@ impl DxWindow {
     pub fn initialize(&self) {
         unsafe {
             dx_SetDrawScreen(DX_SCREEN_BACK);
-            dx_SetUse3DFlag(TRUE);
+            //dx_SetUse3DFlag(TRUE);
             dx_SetAlwaysRunFlag(TRUE);
         }
     }
