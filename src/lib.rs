@@ -1,7 +1,7 @@
-mod common;
-mod dxlib;
-mod my_file;
-mod utils;
+pub mod common;
+pub mod dxlib;
+pub mod my_file;
+pub mod utils;
 
 pub use common::dxlib::*;
 pub use common::dxlib_const_variables::*;
@@ -33,12 +33,13 @@ mod tests {
         //let mut img = load_graph("/Users/daruma/Downloads/kisida.jpg")?;
         play_music("/Users/daruma/Downloads/touhou-music.mp3", DX_PLAYTYPE_BACK)?;
         let (mut x, mut y, mut size_x, mut size_y) = (
-            (TEST_MAX_WINDOW_WIDTH - 300) / 2,
-            (TEST_MAX_WINDOW_HEIGHT - 300) / 2,
-            300,
-            300,
+            (TEST_MAX_WINDOW_WIDTH - 500) / 2,
+            (TEST_MAX_WINDOW_HEIGHT - 500) / 2,
+            500,
+            500,
         );
-        let (mut angle, mut radius, mut time) = (0.0, 5.0, 10);
+        let (mut red,mut green,mut blue) = (10,10,10);
+        let (mut angle, mut radius, mut time,mut color) = (0.0, 5.0, 10,get_color(red,green,blue).ok_or("カラーコードが無効です")?);
         loop {
             if let Err(err) = process_message() {
                 println!("ウィンドウが閉じられたよーーー: {}", err);
@@ -72,13 +73,51 @@ mod tests {
             }
 
             clear_draw_screen()?;
-         
-         // 回転後の座標で四角形を描画
-        draw_line(points[0].0, points[0].1, points[1].0, points[1].1, get_color(255, 255, 255).ok_or("カラーコードが無効です")?)?;
-        draw_line(points[1].0, points[1].1, points[2].0, points[2].1, get_color(255, 255, 255).ok_or("カラーコードが無効です")?)?;
-        draw_line(points[2].0, points[2].1, points[3].0, points[3].1, get_color(255, 255, 255).ok_or("カラーコードが無効です")?)?;
-        draw_line(points[3].0, points[3].1, points[0].0, points[0].1, get_color(255, 255, 255).ok_or("カラーコードが無効です")?)?;
-        angle+=1.0;
+
+            // 回転後の座標で四角形を描画
+            draw_box(
+                points[0].0,
+                points[0].1,
+                points[1].0,
+                points[1].1,
+                color,
+                FALSE,
+            )?;
+            draw_box(
+                points[1].0,
+                points[1].1,
+                points[2].0,
+                points[2].1,
+                color,
+                FALSE
+            )?;
+            draw_box(
+                points[2].0,
+                points[2].1,
+                points[3].0,
+                points[3].1,
+                color,
+                FALSE,
+            )?;
+            draw_box(
+                points[3].0,
+                points[3].1,
+                points[0].0,
+                points[0].1,
+                color,
+                FALSE,
+            )?;
+            angle += 1.0;
+            color = get_color(red,green,blue).ok_or("カラーコードが無効です")?;
+            if red < 255 && green < 255 && blue < 255{
+                red+=1;
+                green+=1;
+                blue+=1;
+            }else{
+                red = 0;
+                green = 0;
+                blue = 0;
+            }
             fps.wait()?;
             fps.draw(get_color(255, 255, 255).ok_or("カラーコードが無効です")?);
             screen_flip()?;
