@@ -1,7 +1,8 @@
 pub mod common;
 pub mod dxlib;
 pub mod my_file;
-pub mod utils;
+#[cfg(feature = "utils")]
+mod utils;
 
 pub use common::dxlib::*;
 pub use common::dxlib_const_variables::*;
@@ -38,8 +39,13 @@ mod tests {
             500,
             500,
         );
-        let (mut red,mut green,mut blue) = (10,10,10);
-        let (mut angle, mut radius, mut time,mut color) = (0.0, 5.0, 10,get_color(red,green,blue).ok_or("カラーコードが無効です")?);
+        let (mut red, mut green, mut blue) = (10, 10, 10);
+        let (mut angle, mut radius, mut time, mut color) = (
+            0.0,
+            5.0,
+            10,
+            get_color(red, green, blue).ok_or("カラーコードが無効です")?,
+        );
         loop {
             if let Err(err) = process_message() {
                 println!("ウィンドウが閉じられたよーーー: {}", err);
@@ -89,7 +95,7 @@ mod tests {
                 points[2].0,
                 points[2].1,
                 color,
-                FALSE
+                FALSE,
             )?;
             draw_box(
                 points[2].0,
@@ -108,12 +114,12 @@ mod tests {
                 FALSE,
             )?;
             angle += 1.0;
-            color = get_color(red,green,blue).ok_or("カラーコードが無効です")?;
-            if red < 255 && green < 255 && blue < 255{
-                red+=1;
-                green+=1;
-                blue+=1;
-            }else{
+            color = get_color(red, green, blue).ok_or("カラーコードが無効です")?;
+            if red < 255 && green < 255 && blue < 255 {
+                red += 1;
+                green += 1;
+                blue += 1;
+            } else {
                 red = 0;
                 green = 0;
                 blue = 0;
