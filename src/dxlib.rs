@@ -91,7 +91,6 @@ pub fn draw_string(x: i32, y: i32, string: &str, color: u32) -> Result<i32, DxEr
 }
 pub fn get_color(red: i32, green: i32, blue: i32) -> Option<u32> {
     if red < 0 || green < 0 || blue < 0 || red > 255 || green > 255 || blue > 255 {
-
         unsafe { dx_DxLib_End() };
         return None;
     }

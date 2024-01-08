@@ -69,9 +69,19 @@ impl Fps {
         self.fps = fps.round();
     }
 
-    pub fn draw(&self, color: u32) {
-        unsafe {
-            dx_DrawString(0, 0, &format!("{}{}{}", "@fps[", self.fps, "]"), color);
+    pub fn draw(&self, color: Option<u32>) {
+        match color {
+            Some(c) => unsafe {
+                dx_DrawString(0, 0, &format!("{}{}{}", "@fps[", self.fps, "]"), c);
+            },
+            None => unsafe {
+                dx_DrawString(
+                    0,
+                    0,
+                    &format!("{}{}{}", "@fps[", self.fps, "]"),
+                    dx_GetColor(255, 255, 255),
+                );
+            },
         }
     }
 
