@@ -2,7 +2,7 @@ pub mod common;
 pub mod dxlib;
 pub mod my_file;
 #[cfg(feature = "utils")]
-mod utils;
+pub mod utils;
 
 pub use common::dxlib::*;
 pub use common::dxlib_const_variables::*;
