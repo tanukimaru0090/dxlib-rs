@@ -91,6 +91,8 @@ pub fn draw_string(x: i32, y: i32, string: &str, color: u32) -> Result<i32, DxEr
 }
 pub fn get_color(red: i32, green: i32, blue: i32) -> Option<u32> {
     if red < 0 || green < 0 || blue < 0 || red > 255 || green > 255 || blue > 255 {
+
+        unsafe { dx_DxLib_End() };
         return None;
     }
     Some(unsafe { dx_GetColor(red, green, blue) })
@@ -383,6 +385,7 @@ pub fn set_fog_start_end(start: f32, end: f32) -> Result<i32, DxError<i32>> {
 }
 pub fn get_colorf(red: f32, green: f32, blue: f32, alpha: f32) -> Option<COLOR_F> {
     if red < 0.0 || green < 0.0 || blue < 0.0 || red > 255.0 || green > 255.0 || blue > 255.0 {
+        unsafe { dx_DxLib_End() };
         return None;
     }
     let res = unsafe { dx_GetColorF(red, green, blue, alpha) };
@@ -390,6 +393,7 @@ pub fn get_colorf(red: f32, green: f32, blue: f32, alpha: f32) -> Option<COLOR_F
 }
 pub fn get_coloru8(red: i32, green: i32, blue: i32, alpha: i32) -> Option<COLOR_U8> {
     if red < 0 || green < 0 || blue < 0 || red > 255 || green > 255 || blue > 255 {
+        unsafe { dx_DxLib_End() };
         return None;
     }
 
