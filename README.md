@@ -12,12 +12,16 @@ dxlib-rs = { git = "https://github.com/tanukimaru0090/dxlib-rs", branch = "beta"
 
 src / main.rs。
 ```Rust
-use dxlib_rs ::{*,dxlib::*};
+use dxlib_rs ::{
+          *,
+          dxlib::*,
+};
 fn main()->Result<(),Box<dyn std::error::Error>>{
  change_window_mode(TRUE)?;
  dxlib_init()?;
  wait_key();
  dxlib_end()?;
+ Ok(())
 }
 ```
 utilsなどを使う場合、
@@ -29,14 +33,19 @@ dxlib-rs = { git = "https://github.com/tanukimaru0090/dxlib-rs", branch = "beta"
 
 src / main.rs。
 ```Rust
-use dxlib_rs ::{*,dxlib::*,utils::{KeyBoard,Fps}};
+use dxlib_rs ::{
+          *,
+          dxlib::*,
+          utils::{KeyBoard,Fps}
+};
 fn main()->Result<(),Box<dyn std::error::Error>>{
  change_window_mode(TRUE)?;
  dxlib_init()?;
  wait_key();
  dxlib_end()?;
+ Ok(())
 }
-```
+``` 
 
 
 
