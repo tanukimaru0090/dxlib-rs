@@ -7,26 +7,41 @@
 myproject/Cargo.toml
 ```toml
 [dependencies]
-dxlib-rs = { git = "https://github.com/tanukimaru0090/dxlib-rs", branch = "master", version = "0.1.0", features = ["dxlib-ffi"], dxlib-ffi = { git = "https://github.com/tanukimaru0090/dxlib-ffi-rs", branch = "master"} }
+dxlib-rs = { git = "https://github.com/tanukimaru0090/dxlib-rs", branch = "beta"}
 ```
 
 src / main.rs。
 ```Rust
-extern crate dxlib_rs;
-dxlib_rs :: *;
-dxlib_rs :: dx_window :: *;
-fn main(){
-unsafe
-{
- mut ref_window = DxWindow :: new();。 .
- window = ref_window.create_window(DxWindow :: videomode(640,480,32).unwrap()、 "hello world window。。!");
- window.is_open(){
-          
-      }
-}
+use dxlib_rs ::{*,dxlib::*};
+fn main()->Result<(),Box<dyn std::error::Error>>{
+ change_window_mode(TRUE)?;
+ dxlib_init()?;
+ wait_key();
+ dxlib_end()?;
 }
 ```
-上記はWindowを表示するだけです。
+utilsなどを使う場合、
+myproject/Cargo.toml
+```toml
+[dependencies]
+dxlib-rs = { git = "https://github.com/tanukimaru0090/dxlib-rs", branch = "beta",features = ["utils"]}
+
+
+src / main.rs。
+```Rust
+use dxlib_rs ::{*,dxlib::*,utils::{KeyBoard,Fps}};
+fn main()->Result<(),Box<dyn std::error::Error>>{
+ change_window_mode(TRUE)?;
+ dxlib_init()?;
+ wait_key();
+ dxlib_end()?;
+}
+```
+
+
+
+
+
 最後に、 「DxLib_x64.dll」を実行時のディレクトリに置くことで実行できるはずです。
 DxLib_x64.dllはDXライブラリの公式サイトのC#版DXライブラリをダウンロードすることで使うことができます。
 
