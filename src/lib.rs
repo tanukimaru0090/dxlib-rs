@@ -13,122 +13,152 @@ mod tests {
     use crate::dxlib::*;
     use crate::utils::{Fps, KeyBoard};
     use crate::*;
+    use std::env::args;
     use std::f64::consts::PI;
     const TEST_MIN_WINDOW_WIDTH: i32 = 640;
     const TEST_MIN_WINDOW_HEIGHT: i32 = 480;
     const TEST_MAX_WINDOW_WIDTH: i32 = 1280;
     const TEST_MAX_WINDOW_HEIGHT: i32 = 800;
     const TEST_WINDOW_TITLE: &str = "test-window";
+    const TEST_GRAPH_PATH: &str = "/Users/daruma/Downloads/irisu203/irisu203/photo.png";
+    const TEST_MODEL_PATH: &str =
+        "/Users/daruma/Downloads/3Dsample/3Dsample/dat/Lat式ミク/Lat式ミクVer2.3_Normal.pmd";
+    const TEST_MUSIC_PATH: &str = "/Users/daruma/Downloads/touhou-sinki.wav";
+    #[test]
+    fn init() -> Result<(), Box<dyn std::error::Error>> {
+        change_window_mode(TRUE)?;
+        dxlib_init()?;
+        wait_key();
+        dxlib_end()?;
+        Ok(())
+    }
 
     #[test]
-    fn test() -> Result<(), Box<dyn std::error::Error>> {
+    fn mv1() -> Result<(), Box<dyn std::error::Error>> {
         change_window_mode(TRUE)?;
         set_use_charcode_format(DX_CHARCODEFORMAT_UTF8)?;
-        set_main_window_text(TEST_WINDOW_TITLE)?;
-        set_graph_mode(TEST_MAX_WINDOW_WIDTH, TEST_MAX_WINDOW_HEIGHT, 32, 120)?;
         dxlib_init()?;
-        set_always_run_flag(TRUE)?;
-        set_draw_screen(DX_SCREEN_BACK)?;
-        let mut fps = Fps::new();
-        let mut key = KeyBoard::new();
-        //let mut img = load_graph("/Users/daruma/Downloads/kisida.jpg")?;
-        play_music("/Users/daruma/Downloads/touhou-music.mp3", DX_PLAYTYPE_BACK)?;
-        let (mut x, mut y, mut size_x, mut size_y) = (
-            (TEST_MAX_WINDOW_WIDTH - 500) / 2,
-            (TEST_MAX_WINDOW_HEIGHT - 500) / 2,
-            500,
-            500,
-        );
-        let (mut red, mut green, mut blue) = (10, 10, 10);
-        let (mut angle, mut radius, mut time, mut color) = (
-            0.0,
-            5.0,
-            10,
-            get_color(red, green, blue).ok_or("カラーコードが無効です")?,
-        );
-        loop {
-            if let Err(err) = process_message() {
-                println!("ウィンドウが閉じられたよーーー: {}", err);
-                break;
-            }
-            key.update()?;
-
-            // 四角形の中心座標を計算
-            let center_x = x + size_x / 2;
-            let center_y = y + size_y / 2;
-
-            let angle_rad = angle * PI / 180.0; // 度からラジアンに変換
-            let mut points = vec![
-                (x, y),
-                (x + size_x, y),
-                (x + size_x, y + size_y),
-                (x, y + size_y),
-            ];
-            for point in points.iter_mut() {
-                // 中心を原点とした座標に変換
-                let mut x_shifted = point.0 - center_x;
-                let mut y_shifted = point.1 - center_y;
-
-                // 座標を回転
-                let x_new = x_shifted as f64 * angle_rad.cos() - y_shifted as f64 * angle_rad.sin();
-                let y_new = x_shifted as f64 * angle_rad.sin() + y_shifted as f64 * angle_rad.cos();
-
-                // 中心を加えて座標を戻す
-                point.0 = (x_new as i32 + center_x) as i32;
-                point.1 = (y_new as i32 + center_y) as i32;
-            }
-
-            clear_draw_screen()?;
-
-            // 回転後の座標で四角形を描画
-            draw_box(
-                points[0].0,
-                points[0].1,
-                points[1].0,
-                points[1].1,
-                color,
-                FALSE,
-            )?;
-            draw_box(
-                points[1].0,
-                points[1].1,
-                points[2].0,
-                points[2].1,
-                color,
-                FALSE,
-            )?;
-            draw_box(
-                points[2].0,
-                points[2].1,
-                points[3].0,
-                points[3].1,
-                color,
-                FALSE,
-            )?;
-            draw_box(
-                points[3].0,
-                points[3].1,
-                points[0].0,
-                points[0].1,
-                color,
-                FALSE,
-            )?;
-            angle += 1.0;
-            color = get_color(red, green, blue).ok_or("カラーコードが無効です")?;
-            if red < 255 && green < 255 && blue < 255 {
-                red += 1;
-                green += 1;
-                blue += 1;
-            } else {
-                red = 0;
-                green = 0;
-                blue = 0;
-            }
-            fps.wait()?;
-            fps.draw(get_color(255, 255, 255).ok_or("カラーコードが無効です")?);
-            screen_flip()?;
-        }
+        let model_handle = mv1_load_model(TEST_MODEL_PATH)?;
+        mv1_draw_model(model_handle)?;
+        wait_key();
         dxlib_end()?;
+        Ok(())
+    }
+    #[test]
+    fn string1() -> Result<(), Box<dyn std::error::Error>> {
+        change_window_mode(TRUE)?;
+        dxlib_init()?;
+        draw_string(0, 0, "hello world!", get_color(255, 255, 255).unwrap())?;
+        wait_key();
+        dxlib_end()?;
+        Ok(())
+    }
+    #[test]
+    fn string2() -> Result<(), Box<dyn std::error::Error>> {
+        change_window_mode(TRUE)?;
+        set_use_charcode_format(DX_CHARCODEFORMAT_UTF8)?;
+        dxlib_init()?;
+        draw_string(0, 0, "ハロー ワールド!", get_color(255, 255, 255).unwrap())?;
+        wait_key();
+        dxlib_end()?;
+        Ok(())
+    }
+    #[test]
+    fn graph1() -> Result<(), Box<dyn std::error::Error>> {
+        change_window_mode(TRUE)?;
+        dxlib_init()?;
+        let img_handle = load_graph(TEST_GRAPH_PATH)?;
+        draw_graph(0, 0, img_handle, TRUE)?;
+        wait_key();
+        dxlib_end()?;
+        Ok(())
+    }
+    #[test]
+    fn graph2() -> Result<(), Box<dyn std::error::Error>> {
+        change_window_mode(TRUE)?;
+        dxlib_init()?;
+        let img_handle = load_graph(TEST_GRAPH_PATH)?;
+        draw_extend_graph(0, 0, 100, 100, img_handle, TRUE)?;
+        wait_key();
+        dxlib_end()?;
+        Ok(())
+    }
+    #[test]
+    fn sound1() -> Result<(), Box<dyn std::error::Error>> {
+        change_window_mode(TRUE)?;
+        set_use_charcode_format(DX_CHARCODEFORMAT_UTF8)?;
+        dxlib_init()?;
+        wait_key();
+        dxlib_end()?;
+
+        Ok(())
+    }
+    #[test]
+    fn sound2() -> Result<(), Box<dyn std::error::Error>> {
+        change_window_mode(TRUE)?;
+        set_use_charcode_format(DX_CHARCODEFORMAT_UTF8)?;
+        dxlib_init()?;
+        wait_key();
+        dxlib_end()?;
+
+        Ok(())
+    }
+    #[test]
+    fn music1() -> Result<(), Box<dyn std::error::Error>> {
+        change_window_mode(TRUE)?;
+        set_use_charcode_format(DX_CHARCODEFORMAT_UTF8)?;
+        dxlib_init()?;
+        let music_handle = load_music_mem(TEST_MUSIC_PATH)?;
+        play_music_mem(music_handle, DX_PLAYTYPE_BACK, 1)?;
+        wait_key();
+        dxlib_end()?;
+
+        Ok(())
+    }
+    #[test]
+    fn music2() -> Result<(), Box<dyn std::error::Error>> {
+        change_window_mode(TRUE)?;
+        set_use_charcode_format(DX_CHARCODEFORMAT_UTF8)?;
+        dxlib_init()?;
+        wait_key();
+        dxlib_end()?;
+
+        Ok(())
+    }
+    #[test]
+    fn test_dxlib() -> Result<(), Box<dyn std::error::Error>> {
+        let args: Vec<String> = args().collect();
+        let input: String = args[1].to_string();
+        match input.as_str() {
+            "music1" => {
+                music1()?;
+            }
+            "music2" => {
+                music2()?;
+            }
+            "sound1" => {
+                sound1()?;
+            }
+            "sound2" => {
+                sound2()?;
+            }
+            "string1" => {
+                string1()?;
+            }
+            "string2" => {
+                string2()?;
+            }
+            "" => {}
+            "" => {}
+            "" => {}
+            "graph1" => {
+                graph1()?;
+            }
+            "graph2" => {
+                graph2()?;
+            }
+            _ => {}
+        }
         Ok(())
     }
 }

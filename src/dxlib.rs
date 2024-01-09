@@ -611,30 +611,30 @@ pub fn set_main_window_text(window_text: &str) -> Result<i32, DxError<i32>> {
         return Ok(res);
     }
 }
-pub fn mv1_load_model(file_name:&str)->Result<i32,DxError<i32>>{
-    let res = unsafe{dx_MV1LoadModel(file_name)};
-    if res == -1{
-        unsafe{dx_DxLib_End()};
-        return Err(DxError::new("",res));
-    }else{
+pub fn mv1_load_model(file_name: &str) -> Result<i32, DxError<i32>> {
+    let res = unsafe { dx_MV1LoadModel(file_name) };
+    if res == -1 {
+        unsafe { dx_DxLib_End() };
+        return Err(DxError::new("", res));
+    } else {
         return Ok(res);
     }
 }
-pub fn mv1_delete_model(m_handle:i32)->Result<i32,DxError<i32>>{
-    let res = unsafe{dx_MV1DeleteModel(m_handle)};
-    if res == -1{
-        unsafe{dx_DxLib_End()};
-        return Err(DxError::new("",res));
-    }else{
+pub fn mv1_delete_model(m_handle: i32) -> Result<i32, DxError<i32>> {
+    let res = unsafe { dx_MV1DeleteModel(m_handle) };
+    if res == -1 {
+        unsafe { dx_DxLib_End() };
+        return Err(DxError::new("", res));
+    } else {
         return Ok(res);
     }
 }
-pub fn mv1_draw_model(m_handle:i32)->Result<i32,DxError<i32>>{
-    let res = unsafe{dx_MV1DrawModel(m_handle)};
-    if res == -1{
-        unsafe{dx_DxLib_End()};
-        return Err(DxError::new("",res));
-    }else{
+pub fn mv1_draw_model(m_handle: i32) -> Result<i32, DxError<i32>> {
+    let res = unsafe { dx_MV1DrawModel(m_handle) };
+    if res == -1 {
+        unsafe { dx_DxLib_End() };
+        return Err(DxError::new("", res));
+    } else {
         return Ok(res);
     }
 }
