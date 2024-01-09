@@ -29,7 +29,7 @@ myproject/Cargo.toml
 ```toml
 [dependencies]
 dxlib-rs = { git = "https://github.com/tanukimaru0090/dxlib-rs", branch = "beta",features = ["utils"]}
-
+```
 
 src / main.rs。
 ```Rust
