@@ -1,0 +1,12 @@
+[package]
+name = "dxlib-rs"
+version = "0.1.2"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[features]
+default = []
+utils = []
+[dependencies]
+dxlib-ffi = {git = "https://github.com/tanukimaru0090/dxlib-ffi-rs/"}
+winapi ={ version = "0.3.9",features = ["wingdi"]}
