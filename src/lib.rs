@@ -88,6 +88,7 @@ mod tests {
         change_window_mode(TRUE)?;
         set_use_charcode_format(DX_CHARCODEFORMAT_UTF8)?;
         dxlib_init()?;
+        let music_handle = load_music_mem(TEST_MUSIC_PATH);
         wait_key();
         dxlib_end()?;
 
