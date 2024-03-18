@@ -3,19 +3,15 @@
 use std::env;
 use std::path::PathBuf;
 
-fn main() {
-    // DLLの名前を指定
-    let dll_name = "DxLib_x64.dll";
-
-    // 利用者側のプロジェクトのディレクトリパスを取得
-    let project_dir = env::var("CARGO_MANIFEST_DIR").unwrap();
-    let project_path = PathBuf::from(project_dir);
-
-    // DLLのパスを構築
-    let dll_path = project_path.join(dll_name);
-
-    // DLLの存在を確認
-    if !dll_path.exists() {
-        panic!("{} が見つかりません。利用者側のプロジェクトのディレクトリに {} を配置してください。", dll_name, dll_name);
+fn main()->Result<(),Box<dyn std::error::Error>> {
+    let env_name = "DXLIB_DLL";
+    let dir = env::var(env_name);
+    if let Some(val) = dir.ok(){
+            if let Some(out) = env::var("OUT_DIR").ok(){
+                std::fs::copy(env_name, out)?;
+            }
+    }else{
+        panic!("環境変数{:}が設定されていません。",env_name);
     }
+    Ok(())
 }
