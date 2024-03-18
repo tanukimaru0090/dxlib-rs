@@ -1,19 +1,21 @@
+
+
 use std::env;
-use std::path::Path;
+use std::path::PathBuf;
 
 fn main() {
-    // プロジェクトのディレクトリパスを取得
-    let project_dir = env::var("CARGO_MANIFEST_DIR").unwrap();
-    let project_path = Path::new(&project_dir);
+    // DLLの名前を指定
+    let dll_name = "DxLib_x64.dll";
 
-    // 必要なDLLの名前を指定
-    let dxlib_dll_name = "DxLib_x64.dll";
+    // 利用者側のプロジェクトのディレクトリパスを取得
+    let project_dir = env::var("OUT_DIR").unwrap();
+    let project_path = PathBuf::from(project_dir);
 
     // DLLのパスを構築
-    let dll_path = project_path.join(dxlib_dll_name);
+    let dll_path = project_path.join(dll_name);
 
     // DLLの存在を確認
     if !dll_path.exists() {
-        panic!("{} が見つかりません。プロジェクトのディレクトリに {} を配置してください。", dxlib_dll_name, dxlib_dll_name);
+        panic!("{} が見つかりません。利用者側のプロジェクトのディレクトリに {} を配置してください。", dll_name, dll_name);
     }
 }
