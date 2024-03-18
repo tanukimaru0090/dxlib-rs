@@ -1,14 +1,19 @@
 use std::env;
-use std::fs;
-fn main(){
-       let current =  env::current_dir();
-       let dxlib_dll = format!("{:}\\DxLib_x64.dll",current.unwrap().to_str().unwrap());
-       match fs::metadata(dxlib_dll.clone()){
-            Ok(_) => {
-            }
-            Err(err) => {
-                println!("{:?}",err);
-                panic!("{:?}が見つかりませんでした",dxlib_dll);
-            }
-       }
+use std::path::Path;
+
+fn main() {
+    // プロジェクトのディレクトリパスを取得
+    let project_dir = env::var("CARGO_MANIFEST_DIR").unwrap();
+    let project_path = Path::new(&project_dir);
+
+    // 必要なDLLの名前を指定
+    let dxlib_dll_name = "DxLib_x64.dll";
+
+    // DLLのパスを構築
+    let dll_path = project_path.join(dxlib_dll_name);
+
+    // DLLの存在を確認
+    if !dll_path.exists() {
+        panic!("{} が見つかりません。プロジェクトのディレクトリに {} を配置してください。", dxlib_dll_name, dxlib_dll_name);
+    }
 }
